@@ -1,3 +1,6 @@
+blueprint: name: "Gece Modu" description: "Gece modu için yapılandırma" active: true settings: baslangic_saati: "20:00" bitis_saati: "08:00" parlaklik:
+
+
 alias: 🌛 Awtrix Night Mode 🌛
 description: ""
 trigger:
