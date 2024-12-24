@@ -1,0 +1,11 @@
+alias: SpeedTest (Awtrix)
+sequence:
+  - service: mqtt.publish
+  	data:
+  	  payload: {"text":"Download speed is {{ states.sensor.speedtest_download.state}}  Mbp/s","icon":"download","pushIcon":0,"repeat":1,"textCase":2,"textOffset":33}
+  	  topic: awtrix_d670d0/custom/speeds_d
+  - service: mqtt.publish
+  	data:
+  	  payload: {"text":"Upload speed is {{ states.sensor.speedtest_upload.state}}  Mbp/s","icon":"upload","pushIcon":0,"repeat":1,"textCase":2,"textOffset":33}
+  	  topic: awtrix_d670d0/custom/speeds_u
+mode: single
