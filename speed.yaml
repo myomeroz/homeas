@@ -1,11 +1,48 @@
-alias: SpeedTest (Awtrix)
-sequence:
-  - service: mqtt.publish
-  	data:
-  	  payload: {"text":"Download speed is {{ states.sensor.speedtest_download.state}}  Mbp/s","icon":"download","pushIcon":0,"repeat":1,"textCase":2,"textOffset":33}
-  	  topic: awtrix_d670d0/custom/speeds_d
-  - service: mqtt.publish
-  	data:
-  	  payload: {"text":"Upload speed is {{ states.sensor.speedtest_upload.state}}  Mbp/s","icon":"upload","pushIcon":0,"repeat":1,"textCase":2,"textOffset":33}
-  	  topic: awtrix_d670d0/custom/speeds_u
+alias: 🌛 Awtrix Night Mode 🌛
+description: ""
+trigger:
+  - platform: time
+    at: "23:00:00"
+    id: NM Start
+    enabled: true
+  - platform: time
+    at: "06:00:00"
+    id: NM End
+    enabled: true
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - NM Start
+        sequence:
+          - service: mqtt.publish
+            data:
+              qos: 0
+              retain: false
+              topic: awtrix_434d94/switch
+              payload: "{\"name\":\"Time\"}"
+          - service: mqtt.publish
+            data:
+              qos: 0
+              retain: false
+              topic: awtrix_434d94/settings
+              payload: >-
+                { "WD": false, "TIME_COL": [255,0,0], "TMODE": 0, "BRI": 1,
+                "ABRI": false, "ATRANS": false }
+      - conditions:
+          - condition: trigger
+            id:
+              - NM End
+            enabled: true
+        sequence:
+          - service: mqtt.publish
+            data:
+              qos: 0
+              retain: false
+              topic: awtrix_a8ba90/settings
+              payload: >-
+                { "WD": true, "TIME_COL": [255,255,255], "TMODE": 2,
+                "ABRI": true, "ATRANS": true }
 mode: single
